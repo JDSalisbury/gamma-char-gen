@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from core.models import Origin, Skills, Character
+from core.models import Origin, Skills, OriginSecondary
 
 
 class SkillsSerializer(serializers.ModelSerializer):
