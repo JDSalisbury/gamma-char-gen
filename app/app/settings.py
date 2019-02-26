@@ -25,7 +25,7 @@ SECRET_KEY = '86p!9!e*ewdct-w$f=a*0iqkfxyth^x1fk4a=1y1kt39(9ttz1'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['0.0.0.0']
+ALLOWED_HOSTS = ['0.0.0.0', 'localhost']
 
 
 # Application definition
@@ -38,9 +38,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework.authtoken',
     'rest_framework_tricks',
     'core',
     'chargen',
+    'user',
     'import_export',
 ]
 
@@ -126,3 +128,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+CORS_ALLOW_METHODS = (
+    'GET',
+    'POST',
+    'PUT',
+)
+
+CORS_ORIGIN_ALLOW_ALL = True

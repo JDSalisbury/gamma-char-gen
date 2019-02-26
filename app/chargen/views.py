@@ -19,3 +19,4 @@ class OriginsViewSet(viewsets.ModelViewSet):
 
 class QuickCharViewSet(OriginsViewSet):
     queryset = models.Origin.objects.order_by('?')[:2]
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
