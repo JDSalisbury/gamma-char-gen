@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from core.models import Origin, Skills, OriginSecondary
+from core.models import Origin, Skills, OriginSecondary, Character
 
 
 class SkillsSerializer(serializers.ModelSerializer):
@@ -35,4 +35,12 @@ class OriginsSerializer(serializers.ModelSerializer):
             'utility',
             'expert',
         )
+        read_only_fields = ['id', ]
+
+
+class CharacterSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Character
+        fields = '__all__'
         read_only_fields = ['id', ]

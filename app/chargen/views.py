@@ -17,6 +17,12 @@ class OriginsViewSet(viewsets.ModelViewSet):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
 
+class CharacterViewSet(viewsets.ModelViewSet):
+    serializer_class = serializers.CharacterSerializer
+    queryset = models.Character.objects.all()
+    permission_classes = (permissions.AllowAny,)
+
+
 class QuickCharViewSet(OriginsViewSet):
     queryset = models.Origin.objects.order_by('?')[:2]
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
