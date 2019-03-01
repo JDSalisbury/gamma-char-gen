@@ -46,32 +46,37 @@ class OriginSecondary(models.Model):
 
 
 class Character(models.Model):
-    name = models.CharField(max_length=25)
-    origin_primary = models.CharField(max_length=25)
-    origin_secondary = models.CharField(max_length=25)
-    ability_primary = models.CharField(max_length=5)
-    ability_secondary = models.CharField(max_length=5)
-    skill_primary = models.CharField(max_length=100)
-    skill_secondary = models.CharField(max_length=100)
-    random_skill = models.OneToOneField(to='Skills', on_delete='')
-    bonus_primary = models.CharField(max_length=100)
-    bonus_secondary = models.CharField(max_length=100)
-    ac = models.IntegerField()
-    fort = models.IntegerField()
-    ref = models.IntegerField()
-    will = models.IntegerField()
-    defense_primary = models.TextField(max_length=1000)
-    defense_secondary = models.TextField(max_length=1000)
-    lvl_1_primary = models.TextField(max_length=1000)
-    lvl_1_secondary = models.TextField(max_length=1000)
-    lvl_2_or_6_primary = models.TextField(max_length=1000)
-    lvl_2_or_6_secondary = models.TextField(max_length=1000)
-    novice_primary = models.TextField(max_length=1000)
-    novice_secondary = models.TextField(max_length=1000)
-    utility_primary = models.TextField(max_length=1000)
-    utility_secondary = models.TextField(max_length=1000)
-    expert_primary = models.TextField(max_length=1000)
-    expert_secondary = models.TextField(max_length=1000)
+    name = models.CharField(max_length=25, null=True, blank=True)
+    origin_primary = models.CharField(max_length=25, null=True, blank=True)
+    origin_secondary = models.CharField(max_length=25, null=True, blank=True)
+    ability_primary = models.CharField(max_length=5, null=True, blank=True)
+    ability_secondary = models.CharField(max_length=5, null=True, blank=True)
+    skill_primary = models.CharField(max_length=100, null=True, blank=True)
+    skill_secondary = models.CharField(max_length=100, null=True, blank=True)
+    random_skill = models.OneToOneField(
+        to='Skills', on_delete='', null=True, blank=True)
+    bonus_primary = models.CharField(max_length=100, null=True, blank=True)
+    bonus_secondary = models.CharField(max_length=100, null=True, blank=True)
+    ac = models.IntegerField(null=True, blank=True)
+    fort = models.IntegerField(null=True, blank=True)
+    ref = models.IntegerField(null=True, blank=True)
+    will = models.IntegerField(null=True, blank=True)
+    defense_primary = models.TextField(max_length=1000, null=True, blank=True)
+    defense_secondary = models.TextField(
+        max_length=1000, null=True, blank=True)
+    lvl_1_primary = models.TextField(max_length=1000, null=True, blank=True)
+    lvl_1_secondary = models.TextField(max_length=1000, null=True, blank=True)
+    lvl_2_or_6_primary = models.TextField(
+        max_length=1000, null=True, blank=True)
+    lvl_2_or_6_secondary = models.TextField(
+        max_length=1000, null=True, blank=True)
+    novice_primary = models.TextField(max_length=1000, null=True, blank=True)
+    novice_secondary = models.TextField(max_length=1000, null=True, blank=True)
+    utility_primary = models.TextField(max_length=1000, null=True, blank=True)
+    utility_secondary = models.TextField(
+        max_length=1000, null=True, blank=True)
+    expert_primary = models.TextField(max_length=1000, null=True, blank=True)
+    expert_secondary = models.TextField(max_length=1000, null=True, blank=True)
 
 
 class Skills(models.Model):
