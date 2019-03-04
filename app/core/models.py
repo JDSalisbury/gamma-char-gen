@@ -53,8 +53,8 @@ class Character(models.Model):
     ability_secondary = models.CharField(max_length=5, null=True, blank=True)
     skill_primary = models.CharField(max_length=100, null=True, blank=True)
     skill_secondary = models.CharField(max_length=100, null=True, blank=True)
-    random_skill = models.OneToOneField(
-        to='Skills', on_delete='', null=True, blank=True)
+    random_skill = models.ForeignKey(
+        to='Skills', on_delete=models.CASCADE, null=True, blank=True)
     bonus_primary = models.CharField(max_length=100, null=True, blank=True)
     bonus_secondary = models.CharField(max_length=100, null=True, blank=True)
     ac = models.IntegerField(null=True, blank=True)

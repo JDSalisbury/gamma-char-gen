@@ -11,7 +11,6 @@ class SkillsSerializer(serializers.ModelSerializer):
             'skill_name',
             'key_ability',
         )
-        read_only_fields = ['id', ]
 
 
 class OriginsSerializer(serializers.ModelSerializer):
