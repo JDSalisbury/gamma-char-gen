@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from core.models import Origin, Skills, OriginSecondary, Character
+from core.models import Origin, Skills, Character
 
 
 class SkillsSerializer(serializers.ModelSerializer):
@@ -8,8 +8,6 @@ class SkillsSerializer(serializers.ModelSerializer):
         model = Skills
         fields = (
             'id',
-            'skill_name',
-            'key_ability',
         )
 
 
@@ -38,6 +36,7 @@ class OriginsSerializer(serializers.ModelSerializer):
 
 
 class CharacterSerializer(serializers.ModelSerializer):
+    # random_skill = SkillsSerializer()
 
     class Meta:
         model = Character
