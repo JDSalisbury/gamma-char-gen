@@ -1,9 +1,45 @@
+# from rest_framework_tricks.models.fields import NestedProxyField
 from django.db import models
-# from django.conf import settings
-from rest_framework_tricks.models.fields import NestedProxyField
+from django.conf import settings
+from django.contrib.auth.models import (
+    AbstractBaseUser, BaseUserManager, PermissionsMixin
+)
 
 
 # Create your models here.
+
+
+class UserManager(BaseUserManager):
+
+    def create_user(self, email, password=None, **extra_fields):
+
+        if not email:
+            raise ValueError('Users must have an email address')
+        user = self.model(email=self.normalize_email(email), **extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
+
+        return user
+
+    def create_superuser(self, email, password):
+        user = self.create_user(email, password)
+        user.is_staff = True
+        user.is_superuser = True
+        user.save(using=self._db)
+
+        return user
+
+
+class User(AbstractBaseUser, PermissionsMixin):
+
+    email = models.EmailField(max_length=255, unique=True)
+    name = models.CharField(max_length=255, null=True, blank=True)
+    is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
+
+    objects = UserManager()
+
+    USERNAME_FIELD = 'email'
 
 
 class Origin(models.Model):
@@ -47,8 +83,13 @@ class OriginSecondary(models.Model):
 
 
 class Character(models.Model):
-    # playerId = models.ForeignKey(
-    #     settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE
+    )
+
     name = models.CharField(max_length=25, null=True, blank=True)
     origin_primary = models.CharField(max_length=25, null=True, blank=True)
     origin_secondary = models.CharField(max_length=25, null=True, blank=True)

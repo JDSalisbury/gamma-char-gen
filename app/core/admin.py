@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Origin, Character, Skills, OriginSecondary
+from .models import Origin, Character, Skills, OriginSecondary, User
 from import_export.admin import ImportExportModelAdmin
 from import_export import resources
 
@@ -28,6 +28,6 @@ admin.site.register(Origin, OriginAdmin)
 admin.site.register(Character)
 admin.site.register(Skills)
 admin.site.register(OriginSecondary, OriginSecondaryAdmin)
-
+admin.site.register(User)
 
 # Register your models here.

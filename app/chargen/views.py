@@ -22,6 +22,10 @@ class CharacterViewSet(viewsets.ModelViewSet):
     queryset = models.Character.objects.all()
     permission_classes = (permissions.AllowAny,)
 
+    def perform_create(self, serializer):
+        print(self.request.user)
+        serializer.save(user=self.request.user)
+
 
 class QuickCharViewSet(OriginsViewSet):
     queryset = models.Origin.objects.order_by('?')[:2]

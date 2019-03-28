@@ -40,10 +40,10 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'rest_framework_tricks',
-    'core',
     'corsheaders',
-    'chargen',
+    'core',
     'user',
+    'chargen',
     'import_export',
 ]
 
@@ -141,4 +141,4 @@ CORS_ALLOW_METHODS = (
 
 CORS_ORIGIN_ALLOW_ALL = True
 
-# AUTH_USER_MODEL = "core.User"
+AUTH_USER_MODEL = "core.User"
