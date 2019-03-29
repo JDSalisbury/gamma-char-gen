@@ -132,13 +132,31 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-
+CSRF_COOKIE_SECURE = False
+SESSION_COOKIE_SECURE = False
 CORS_ALLOW_METHODS = (
     'GET',
     'POST',
     'PUT',
 )
+CORS_ALLOW_HEADERS = (
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+)
 
 CORS_ORIGIN_ALLOW_ALL = True
 
 AUTH_USER_MODEL = "core.User"
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAdminUser',
+    ]
+}

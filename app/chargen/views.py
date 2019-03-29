@@ -1,6 +1,7 @@
 from chargen import serializers
 from core import models
 from rest_framework import viewsets, permissions
+from rest_framework.authentication import TokenAuthentication
 
 
 class SkillsViewSet(viewsets.ModelViewSet):
@@ -20,10 +21,14 @@ class OriginsViewSet(viewsets.ModelViewSet):
 class CharacterViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.CharacterSerializer
     queryset = models.Character.objects.all()
-    permission_classes = (permissions.AllowAny,)
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get_queryset(self):
+        return self.queryset.filter(user=self.request.user).order_by('-name')
 
     def perform_create(self, serializer):
-        print(self.request.user)
+        print(self.request.user.pk)
         serializer.save(user=self.request.user)
 
 

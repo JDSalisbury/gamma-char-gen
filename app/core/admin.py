@@ -3,6 +3,32 @@ from .models import Origin, Character, Skills, OriginSecondary, User
 from import_export.admin import ImportExportModelAdmin
 from import_export import resources
 
+from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+from django.utils.translation import gettext as _
+from core import models
+# Register your models here.
+
+
+class UserAdmin(BaseUserAdmin):
+
+    ordering = ['id']
+    list_display = ['email', 'name']
+    fieldsets = (
+        (None, {'fields': ('email', 'password')}),
+        (_('Personal Info'), {'fields': ('name',)}),
+        (
+            _('Permissions'),
+            {'fields': ('is_active', 'is_staff', 'is_superuser',)}
+        ),
+        (_('Important dates'), {'fields': ('last_login',)}),
+    )
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('email', 'password1', 'password2'),
+        }),
+    )
+
 
 class OriginResource(resources.ModelResource):
 
@@ -28,6 +54,6 @@ admin.site.register(Origin, OriginAdmin)
 admin.site.register(Character)
 admin.site.register(Skills)
 admin.site.register(OriginSecondary, OriginSecondaryAdmin)
-admin.site.register(User)
+admin.site.register(User, UserAdmin)
 
 # Register your models here.
