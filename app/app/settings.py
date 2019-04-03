@@ -25,7 +25,7 @@ SECRET_KEY = '86p!9!e*ewdct-w$f=a*0iqkfxyth^x1fk4a=1y1kt39(9ttz1'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['0.0.0.0', 'localhost']
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'rest_framework_tricks',
+    'rest_auth',
     'corsheaders',
     'core',
     'user',
@@ -132,8 +133,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-CSRF_COOKIE_SECURE = False
-SESSION_COOKIE_SECURE = False
+CORS_ORIGIN_ALLOW_ALL = True
+# CSRF_COOKIE_SECURE = False
+# SESSION_COOKIE_SECURE = False
 CORS_ALLOW_METHODS = (
     'GET',
     'POST',
@@ -151,12 +153,15 @@ CORS_ALLOW_HEADERS = (
     'x-requested-with',
 )
 
-CORS_ORIGIN_ALLOW_ALL = True
 
 AUTH_USER_MODEL = "core.User"
 
 REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ),
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAdminUser',
+        'rest_framework.permissions.AllowAny',
     ]
 }

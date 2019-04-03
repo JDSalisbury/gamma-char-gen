@@ -2,6 +2,7 @@ from chargen import serializers
 from core import models
 from rest_framework import viewsets, permissions
 from rest_framework.authentication import TokenAuthentication
+from django.views.decorators.csrf import ensure_csrf_cookie
 
 
 class SkillsViewSet(viewsets.ModelViewSet):
@@ -22,7 +23,7 @@ class CharacterViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.CharacterSerializer
     queryset = models.Character.objects.all()
     authentication_classes = (TokenAuthentication,)
-    permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
     def get_queryset(self):
         return self.queryset.filter(user=self.request.user).order_by('-name')
