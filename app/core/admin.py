@@ -1,5 +1,12 @@
 from django.contrib import admin
-from .models import Origin, Character, Skills, OriginSecondary, User
+from .models import(
+    Origin, Character, Skills, OriginSecondary, User,
+    GammaCharacterSheet,
+    Campaign,
+    InventoryItem,
+    Gear,
+    Weapon,
+)
 from import_export.admin import ImportExportModelAdmin
 from import_export import resources
 
@@ -53,6 +60,11 @@ class OriginSecondaryAdmin(ImportExportModelAdmin):
 admin.site.register(Origin, OriginAdmin)
 admin.site.register(Character)
 admin.site.register(Skills)
+admin.site.register(Weapon)
+admin.site.register(Gear)
+admin.site.register(InventoryItem)
+admin.site.register(Campaign)
+admin.site.register(GammaCharacterSheet)
 admin.site.register(OriginSecondary, OriginSecondaryAdmin)
 admin.site.register(User, UserAdmin)
 

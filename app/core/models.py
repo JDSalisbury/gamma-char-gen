@@ -1,12 +1,11 @@
 # from rest_framework_tricks.models.fields import NestedProxyField
+import os
+import uuid
 from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import (
     AbstractBaseUser, BaseUserManager, PermissionsMixin
 )
-
-
-# Create your models here.
 
 
 class UserManager(BaseUserManager):
@@ -34,8 +33,8 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     email = models.EmailField(max_length=255, unique=True)
     name = models.CharField(max_length=255, null=True, blank=True)
-    is_active = models.BooleanField(default=True)
-    is_staff = models.BooleanField(default=False)
+    is_active = models.BooleanField(null=True, default=True)
+    is_staff = models.BooleanField(null=True, default=False)
 
     objects = UserManager()
 
@@ -47,10 +46,10 @@ class Origin(models.Model):
     ability = models.CharField(max_length=5)
     skill = models.CharField(max_length=100)
     bonus = models.CharField(max_length=100)
-    ac = models.IntegerField()
-    fort = models.IntegerField()
-    ref = models.IntegerField()
-    will = models.IntegerField()
+    ac = models.IntegerField(null=True, default=0)
+    fort = models.IntegerField(null=True, default=0)
+    ref = models.IntegerField(null=True, default=0)
+    will = models.IntegerField(null=True, default=0)
     defense = models.TextField(max_length=1000)
     lvl_1 = models.TextField(max_length=1000)
     lvl_2_or_6 = models.TextField(max_length=1000)
@@ -67,10 +66,10 @@ class OriginSecondary(models.Model):
     ability = models.CharField(max_length=5)
     skill = models.CharField(max_length=100)
     bonus = models.CharField(max_length=100)
-    ac = models.IntegerField()
-    fort = models.IntegerField()
-    ref = models.IntegerField()
-    will = models.IntegerField()
+    ac = models.IntegerField(null=True, default=0)
+    fort = models.IntegerField(null=True, default=0)
+    ref = models.IntegerField(null=True, default=0)
+    will = models.IntegerField(null=True, default=0)
     defense = models.TextField(max_length=1000)
     lvl_1 = models.TextField(max_length=1000)
     lvl_2_or_6 = models.TextField(max_length=1000)
@@ -133,46 +132,135 @@ class Skills(models.Model):
         return self.skill_name
 
 
-# class CharacterSheet(models.Model):
+class GammaCharacterSheet(models.Model):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE
+    )   # Placed on Create
 
-#     name = models.CharField()
-#     lvl = models.IntegerField(default=1)
-#     origin1_first = models.CharField()
-#     origin2_second = models.CharField()
-#     strength = models.IntegerField()
-#     dexterity = models.IntegerField()
-#     wisdom = models.IntergerField()
-#     constitution = models.IntergerField()
-#     intelligence = models.IntegerField()
-#     charisma = models.IntegerField()
-#     str_mod = models.IntegerField()
-#     dex_mod = models.IntegerField()
-#     wis_mod = models.IntegerField()
-#     con_mod = models.IntegerField()
-#     int_mod = models.IntegerField()
-#     cha_mod = models.IntegerField()
-#     skill1 = models.CharField()
-#     skill2 = models.CharField()
-#     skill3 = models.CharField()
-#     skill1_mod = models.IntegerField()
-#     skill2_mod = models.IntegerField()
-#     skill3_mod = models.IntegerField()
-#     hp = models.IntegerField()
-#     speed = models.IntegerField()
-#     ac = models.IntegerField()
-#     fort = models.IntegerField()
-#     ref = models.IntegerField()
-#     will = models.IntegerField()
-#     init = models.IntegerField()
-#     skill_bonus1 = models.CharField()
-#     skill_bonus2 = models.CharField()
-#     defense1 = models.CharField()
-#     defense2 = models.CharField()
-#     critical1 = models.CharField()
-#     critical2 = models.CharField()
-#     novice_1 = models.CharField()
-#     novice_2 = models.CharField()
-#     utility_1 = models.CharField()
-#     utility_2 = models.CharField()
-#     expert_1 = models.CharField()
-#     expert_2 = models.CharField()
+    # A Choice after Character Creation
+    image = models.CharField(max_length=255, blank=True, null=True)
+    archived = models.BooleanField(
+        null=True, default=False)  # In place of delete
+
+    # Auto Generated then editable
+    name = models.CharField(max_length=255, blank=True, null=True)
+    lvl = models.IntegerField(null=True, default=1)  # Auto generated
+    origin1_first = models.CharField(
+        max_length=255, blank=True, null=True)  # Placed
+    origin2_second = models.CharField(
+        max_length=255, blank=True, null=True)  # Placed
+
+    strength = models.IntegerField(null=True, default=0)  # Set
+    dexterity = models.IntegerField(null=True, default=0)  # Set
+    wisdom = models.IntegerField(null=True, default=0)  # Set
+    constitution = models.IntegerField(null=True, default=0)  # Set
+    intelligence = models.IntegerField(null=True, default=0)  # Set
+    charisma = models.IntegerField(null=True, default=0)  # Set
+
+    skill1 = models.CharField(max_length=255, blank=True, null=True)  # Set
+    skill2 = models.CharField(max_length=255, blank=True, null=True)  # Set
+    skill3 = models.CharField(max_length=255, blank=True, null=True)  # Set
+    skill1_mod = models.IntegerField(null=True, default=0)  # Set
+    skill2_mod = models.IntegerField(null=True, default=0)  # Set
+    skill3_mod = models.IntegerField(null=True, default=0)  # Set
+    hp = models.IntegerField(null=True, default=0)  # Set
+    speed = models.IntegerField(null=True, default=6)
+    ac = models.IntegerField(null=True, default=0)
+    fort = models.IntegerField(null=True, default=0)  # Set
+    ref = models.IntegerField(null=True, default=0)  # Set
+    will = models.IntegerField(null=True, default=0)  # Set
+
+    overcharge_bonus1 = models.CharField(
+        max_length=255, blank=True, null=True)  # Set
+    overcharge_bonus2 = models.CharField(
+        max_length=255, blank=True, null=True)  # Set
+
+    defense1 = models.CharField(max_length=255, blank=True, null=True)  # Sent
+    defense2 = models.CharField(max_length=255, blank=True, null=True)  # Sent
+    defense_ability1 = models.CharField(
+        max_length=9255, blank=True, null=True)  # Sent
+    defense_ability2 = models.CharField(
+        max_length=9255, blank=True, null=True)  # Sent
+
+    critical_choice_lvl_2 = models.CharField(
+        max_length=2955, blank=True, null=True)
+    critical_choice_lvl_6 = models.CharField(
+        max_length=2955, blank=True, null=True)
+
+    critical1 = models.CharField(
+        max_length=2955, blank=True, null=True)  # Sent
+    critical2 = models.CharField(
+        max_length=2955, blank=True, null=True)  # Sent
+
+    novice_1 = models.CharField(max_length=9255, blank=True, null=True)  # Set
+    novice_2 = models.CharField(max_length=9255, blank=True, null=True)  # Set
+
+    utility_choice_lvl_3 = models.CharField(
+        max_length=9255, blank=True, null=True)
+    utility_choice_lvl_7 = models.CharField(
+        max_length=9255, blank=True, null=True)
+
+    utility_1 = models.CharField(
+        max_length=9255, blank=True, null=True)  # Sent
+    utility_2 = models.CharField(
+        max_length=9255, blank=True, null=True)  # Sent
+
+    expert_choice_lvl_5 = models.CharField(
+        max_length=9255, blank=True, null=True)
+    expert_choice_lvl_9 = models.CharField(
+        max_length=9255, blank=True, null=True)
+
+    expert_1 = models.CharField(max_length=9255, blank=True, null=True)  # Sent
+    expert_2 = models.CharField(max_length=9255, blank=True, null=True)  # Sent
+
+    gear = models.ManyToManyField('Gear')
+    weapons = models.ManyToManyField('Weapon')
+    inventory_items = models.ManyToManyField('InventoryItem')
+    campaign = models.ManyToManyField('Campaign')
+
+    def __str__(self):
+        return self.name
+
+
+class Campaign(models.Model):
+    name = models.CharField(max_length=255, blank=True, null=True)
+    note = models.CharField(max_length=255, blank=True, null=True)
+
+    def __str__(self):
+        return self.name
+
+
+class InventoryItem(models.Model):
+    name = models.CharField(max_length=255, blank=True, null=True)
+    note = models.CharField(max_length=255, blank=True, null=True)
+    cost = models.CharField(max_length=255, blank=True, null=True)
+    quantity = models.IntegerField(null=True, default=0)
+
+    def __str__(self):
+        return self.name
+
+
+class Gear(models.Model):
+    name = models.CharField(max_length=255, blank=True, null=True)
+    note = models.CharField(max_length=255, blank=True, null=True)
+    ac_bonus = models.IntegerField(null=True, default=0)
+    equipped = models.BooleanField(max_length=255, blank=True, null=True)
+
+    def __str__(self):
+        return self.name
+
+
+class Weapon(models.Model):
+    name = models.CharField(max_length=255, blank=True, null=True)
+    note = models.CharField(max_length=255, blank=True, null=True)
+    dice = models.CharField(max_length=255, blank=True, null=True)
+    bonus = models.IntegerField(null=True, default=0)
+    accuracy = models.IntegerField(null=True, default=0)
+    ability_modifier = models.CharField(max_length=255, blank=True, null=True)
+    equipped = models.BooleanField(max_length=255, blank=True, null=True)
+
+    def __str__(self):
+        return self.name
