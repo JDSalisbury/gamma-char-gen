@@ -9,6 +9,7 @@ router.register('weapon', views.WeaponViewSet)
 router.register('inventoryitem', views.InventoryItemViewSet)
 router.register('gammacharactersheet', views.GammaCharacterSheetViewSet)
 
+router.register('addToInventory', views.AddToInventoryViewSet)
 
 router.register('skill', views.SkillsViewSet)
 router.register('origin', views.OriginsViewSet)

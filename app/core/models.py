@@ -144,6 +144,7 @@ class GammaCharacterSheet(models.Model):
     image = models.CharField(max_length=255, blank=True, null=True)
     archived = models.BooleanField(
         null=True, default=False)  # In place of delete
+    temp = models.CharField(max_length=255, blank=True, null=True)
 
     # Auto Generated then editable
     name = models.CharField(max_length=255, blank=True, null=True)
@@ -216,34 +217,18 @@ class GammaCharacterSheet(models.Model):
     expert_1 = models.CharField(max_length=9255, blank=True, null=True)  # Sent
     expert_2 = models.CharField(max_length=9255, blank=True, null=True)  # Sent
 
-    gear = models.ManyToManyField('Gear')
-    weapons = models.ManyToManyField('Weapon')
-    inventory_items = models.ManyToManyField('InventoryItem')
     campaign = models.ManyToManyField('Campaign')
 
     def __str__(self):
         return self.name
 
 
-class Campaign(models.Model):
-    name = models.CharField(max_length=255, blank=True, null=True)
-    note = models.CharField(max_length=255, blank=True, null=True)
-
-    def __str__(self):
-        return self.name
-
-
-class InventoryItem(models.Model):
-    name = models.CharField(max_length=255, blank=True, null=True)
-    note = models.CharField(max_length=255, blank=True, null=True)
-    cost = models.CharField(max_length=255, blank=True, null=True)
-    quantity = models.IntegerField(null=True, default=0)
-
-    def __str__(self):
-        return self.name
-
-
 class Gear(models.Model):
+    gammaCharacterSheet = models.ForeignKey(
+        "core.GammaCharacterSheet", on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+        related_name="gear")
     name = models.CharField(max_length=255, blank=True, null=True)
     note = models.CharField(max_length=255, blank=True, null=True)
     ac_bonus = models.IntegerField(null=True, default=0)
@@ -253,7 +238,27 @@ class Gear(models.Model):
         return self.name
 
 
+class InventoryItem(models.Model):
+    gammaCharacterSheet = models.ForeignKey(
+        "core.GammaCharacterSheet", on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+        related_name="inventory_items")
+    name = models.CharField(max_length=255, blank=True, null=True)
+    note = models.CharField(max_length=255, blank=True, null=True)
+    cost = models.CharField(max_length=255, blank=True, null=True)
+    quantity = models.IntegerField(null=True, default=0)
+
+    def __str__(self):
+        return self.name
+
+
 class Weapon(models.Model):
+    gammaCharacterSheet = models.ForeignKey(
+        "core.GammaCharacterSheet", on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+        related_name="weapons")
     name = models.CharField(max_length=255, blank=True, null=True)
     note = models.CharField(max_length=255, blank=True, null=True)
     dice = models.CharField(max_length=255, blank=True, null=True)
@@ -261,6 +266,14 @@ class Weapon(models.Model):
     accuracy = models.IntegerField(null=True, default=0)
     ability_modifier = models.CharField(max_length=255, blank=True, null=True)
     equipped = models.BooleanField(max_length=255, blank=True, null=True)
+
+    def __str__(self):
+        return self.name
+
+
+class Campaign(models.Model):
+    name = models.CharField(max_length=255, blank=True, null=True)
+    note = models.CharField(max_length=255, blank=True, null=True)
 
     def __str__(self):
         return self.name
