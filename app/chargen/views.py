@@ -79,10 +79,3 @@ class CampaignViewSet(viewsets.ModelViewSet):
 class QuickCharViewSet(OriginsViewSet):
     queryset = models.Origin.objects.order_by('?')[:2]
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
-
-
-class AddToInventoryViewSet(InventoryItemViewSet):
-
-    def perform_create(self, serializer):
-        item = serializer.save()
-        item.user.add()
