@@ -24,7 +24,7 @@ pycodestyle==2.5.0
 pyflakes==2.1.0
 pylint==2.2.2
 pytz==2018.9
-PyYAML==3.13
+PyYAML==5.4
 six==1.12.0
 tablib==0.12.1
 unicodecsv==0.14.1
